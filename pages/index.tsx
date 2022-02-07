@@ -2,15 +2,17 @@ import type { NextPage } from "next";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
-const inputStyle: string = "w-96 py-4 my-4 block  px-2 rounded";
+const inputStyle: string = "lg:w-96 py-4 my-4 block  px-2 rounded w-full";
 
 type Contacts = {
+  id: number;
   name: string;
   email: string;
 };
 
 const Home: NextPage = () => {
   const [contacts, setContacts] = useState<Contacts[]>([]);
+  const [newId, setNewId] = useState<number>(1);
 
   const {
     register,
@@ -19,10 +21,14 @@ const Home: NextPage = () => {
     formState: { errors },
   } = useForm<Contacts>();
   const onSubmit = (data: Contacts) => {
+    data["id"] = newId;
     setContacts((contacts) => contacts.concat(data));
 
     console.log(contacts);
+
+    setNewId((id) => (id += 1));
     reset();
+    console.log(newId);
   };
 
   return (
